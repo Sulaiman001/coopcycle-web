@@ -117,6 +117,8 @@ class ProfileController extends Controller
             throw $this->createAccessDeniedException();
         }
 
+        $jwtManager = $this->container->get('lexik_jwt_authentication.jwt_manager');
+
         if ($order->isFoodtech()) {
 
             $reset = false;
@@ -131,6 +133,7 @@ class ProfileController extends Controller
                 'order_normalized' => $this->get('serializer')->normalize($order, 'json', ['groups' => ['order']]),
                 'breadcrumb_path' => 'profile_orders',
                 'reset' => $reset,
+                'jwt' => $jwtManager->create($this->getUser()),
             ]);
         }
 
